@@ -7,8 +7,13 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-
+/**
+ * 当前项目初始化文件
+ * 每次项目都会读取当前文件
+ */
 const isDev = process.env.NODE_ENV === 'development';
+// 登录页地址
+// 如果当前没有用户登录信息，则重定向到当前页面
 const loginPath = '/user/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -34,7 +39,8 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser();
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      // 查看当前是否登录，如果未登录则重定向到登录页面
+      // history.push(loginPath);
     }
     return undefined;
   };
@@ -64,8 +70,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
+      // 白名单地址
+      const whiterList = ['/user/register', loginPath];
+      if (whiterList.includes(location.pathname)) {
+        return;
+      }
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser) {
+        // 查看当前是否登录，如果未登录则重定向到登录页面
         history.push(loginPath);
       }
     },
