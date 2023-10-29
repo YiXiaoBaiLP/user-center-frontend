@@ -16,9 +16,9 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Alert, message, Tabs } from 'antd';
+import { Alert, Divider, message, Space, Tabs } from 'antd';
 import React, { useState } from 'react';
-import { history, useModel } from 'umi';
+import { Link, history, useModel } from 'umi';
 import styles from './index.less';
 import { PLANET_LINK } from '@/constants';
 const LoginMessage: React.FC<{
@@ -146,6 +146,8 @@ const Login: React.FC = () => {
             <ProFormCheckbox noStyle name="autoLogin">
               自动登录
             </ProFormCheckbox>
+            <Divider type="vertical" orientation="right" />
+            <Link to="/user/register">注册账号</Link>
             <a
               href={PLANET_LINK}
               target="_blank"

@@ -15,6 +15,11 @@ const isDev = process.env.NODE_ENV === 'development';
 // 登录页地址
 // 如果当前没有用户登录信息，则重定向到当前页面
 const loginPath = '/user/login';
+/**
+ * 无须登录的页面
+ * 白名单
+ */
+const NO_NEED_LOGIN_WHITER_LIST = ['/user/register', loginPath];
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -23,7 +28,7 @@ export const initialStateConfig = {
 
 export const request: RequestConfig = {
   //prefix: 'http://localhost:8000/api',
-  timeout: 1000,
+  timeout: 100000,
 };
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -36,25 +41,24 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      return await queryCurrentUser();
     } catch (error) {
       // 查看当前是否登录，如果未登录则重定向到登录页面
-      // history.push(loginPath);
+      history.push(loginPath);
     }
     return undefined;
   };
-  // 如果不是登录页面，执行
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
+  // 如果是白名单中的页面则不执行
+  if (NO_NEED_LOGIN_WHITER_LIST.includes(history.location.pathname)) {
     return {
       fetchUserInfo,
-      currentUser,
       settings: defaultSettings,
     };
   }
+  const currentUser = await fetchUserInfo();
   return {
     fetchUserInfo,
+    currentUser,
     settings: defaultSettings,
   };
 }
@@ -65,14 +69,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.username,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      // 白名单地址
-      const whiterList = ['/user/register', loginPath];
-      if (whiterList.includes(location.pathname)) {
+      // 判断是否为白名单地址
+      if (NO_NEED_LOGIN_WHITER_LIST.includes(location.pathname)) {
         return;
       }
       // 如果没有登录，重定向到 login

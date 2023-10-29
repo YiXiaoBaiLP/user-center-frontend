@@ -1,20 +1,8 @@
 import Footer from '@/components/Footer';
-import { login, register } from '@/services/ant-design-pro/api';
+import { register } from '@/services/ant-design-pro/api';
 
-import {
-  AlipayCircleOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
-import {
-  LoginForm,
-  ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { history, useModel } from 'umi';
@@ -33,7 +21,7 @@ const LoginMessage: React.FC<{
   />
 );
 const Register: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const fetchUserInfo = async () => {
@@ -62,16 +50,16 @@ const Register: React.FC = () => {
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
-        const { redirect } = query as {
-          redirect: string;
-        };
         // 重定向到之前的位置
-        history.push('/user/login' + redirect);
+        history.push({
+          pathname: '/user/login',
+          query: query,
+        });
         return;
+      } else {
+        throw new Error(`register error id = ${id}`);
       }
       console.log(id);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(id);
     } catch (error) {
       const defaultLoginFailureMessage = '注册失败，请重试！';
       message.error(defaultLoginFailureMessage);
