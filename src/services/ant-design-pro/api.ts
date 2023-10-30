@@ -29,6 +29,13 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
     ...(options || {}),
   });
 }
+/** 查询用户信息 GET /api/user/search */
+export async function searchUsers(options?: { [key: string]: any }) {
+  return request<API.CurrentUser>('/api/user/search', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
 
 /** 登录接口 POST /api/login/register */
 export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {

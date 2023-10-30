@@ -1,6 +1,9 @@
 // @ts-ignore
 /* eslint-disable */
-
+/*
+  全局命名空间，所有的文件都可以调用 API 中所定义的变量
+  TODO：了解一下如何进行编译的，如何处理的
+*/
 declare namespace API {
   type CurrentUser = {
     id: number;
