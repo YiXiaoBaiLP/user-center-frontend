@@ -204,13 +204,13 @@ const columns: ProColumns<API.CurrentUser>[] = [
       >
         编辑
       </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+      <a href={record.avatarUrl} target="_blank" rel="noopener noreferrer" key="view">
         查看
       </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+      <a href={record.avatarUrl} target="_blank" rel="noopener noreferrer" key="view">
         复制
       </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+      <a href={record.avatarUrl} target="_blank" rel="noopener noreferrer" key="view">
         删除
       </a>,
       // <TableDropdown

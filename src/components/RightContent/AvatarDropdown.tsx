@@ -38,7 +38,11 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     (event: MenuInfo) => {
       const { key } = event;
       if (key === 'logout') {
+        // 清空登录态
+        // {...s, key: value}：是前端的一个语法糖，
+        // 表示将 对象中的所有键值对都展开 ...s,然后将所有的属性赋值到新的对象中去
         setInitialState((s) => ({ ...s, currentUser: undefined }));
+        // 登出方法
         loginOut();
         return;
       }
