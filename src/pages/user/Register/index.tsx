@@ -42,27 +42,29 @@ const Register: React.FC = () => {
     }
     try {
       // 注册
-      const id = await register(values);
-      if (id > 0) {
+      const res = await register(values);
+      if (res.code === 0 && res.data > 0) {
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+        // await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
         // 重定向到之前的位置
         history.push({
           pathname: '/user/login',
-          query: query,
+          query,
+          // query: query,
         });
         return;
       } else {
-        throw new Error(`register error id = ${id}`);
+        throw new Error(`register error id = ${res.code}`);
       }
-      console.log(id);
-    } catch (error) {
+      console.log(res);
+    } catch (error: any) {
       const defaultLoginFailureMessage = '注册失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      // message.error(defaultLoginFailureMessage);
+      message.error(error.message ?? defaultLoginFailureMessage);
     }
   };
   const { status, type: loginType } = userLoginState;
@@ -147,6 +149,20 @@ const Register: React.FC = () => {
                     min: 8,
                     type: 'string',
                     message: '密码长度不能小于8位！',
+                  },
+                ]}
+              />
+              <ProFormText
+                name="planetCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className={styles.prefixIcon} />,
+                }}
+                placeholder={'请输入邀请码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '邀请码是必填项！',
                   },
                 ]}
               />

@@ -37,9 +37,9 @@ export async function searchUsers(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login/register */
+/** 注册接口 POST /api/login/register */
 export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {
-  return request<API.RegisterResult>('/api/user/register', {
+  return request<API.BaseResponse<API.RegisterResult>>('/api/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

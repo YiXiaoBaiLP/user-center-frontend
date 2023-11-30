@@ -112,6 +112,12 @@ const columns: ProColumns<API.CurrentUser>[] = [
     width: 100,
   },
   {
+    title: '用户编号',
+    dataIndex: 'planetCode',
+    copyable: true,
+    ellipsis: true,
+  },
+  {
     title: '创建时间',
     key: 'showTime',
     dataIndex: 'created_at',
