@@ -46,11 +46,14 @@ declare namespace API {
     progress?: number;
   };
 
+  /**
+   * 通用返回类
+   */
   type BaseResponse<T> = {
     code: number;
     data: T;
     message: string;
-    descption: string;
+    description: string;
   };
 
   type RuleList = {

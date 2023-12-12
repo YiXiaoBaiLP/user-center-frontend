@@ -58,7 +58,8 @@ const Register: React.FC = () => {
         });
         return;
       } else {
-        throw new Error(`register error id = ${res.code}`);
+        //throw new Error(`register error id = ${res.code}`);
+        throw new Error(res.description);
       }
       console.log(res);
     } catch (error: any) {
